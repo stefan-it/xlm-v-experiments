@@ -102,6 +102,7 @@ Here's the overall performance table (inspired by Table 11 in the XLM-V paper wi
 | XLM-V (Reproduced) | 25.3 | 45.7 | 55.6 | 33.2 | 56.1 | 16.5 | 40.7 | 50.8  | 26.3 | 47.2 | 39.7
 
 Diff. between XLM-V and XLM-R in the paper: (32.1 - 20.9) = 11.2%.
+
 Diff. between reproduced XLM-V and XLM-R: (39.7 - 22.9) = 16.8%.
 
 ## WikiANN (Rahimi et al.)
@@ -139,6 +140,7 @@ Here's the overall performance table (inspired by Table 10 in the XLM-V paper wi
 | XLM-V (Reproduced) | 84.1 | 81.3 | 78.9 | 50.9 | 55.9 | 63.0 | 65.7 | 75.9 | 70.8 | 64.8 | 53.9 | 69.6 | 61.1 | 47.2 | 65.0
 
 Diff. between XLM-V and XLM-R in the paper: (64.7 - 61.3) = 3.4%.
+
 Diff. between reproduced XLM-V and XLM-R: (65.0 - 62.6) = 2.4%.
 
 # 🤗 Transformers Model Hub
