@@ -76,7 +76,7 @@ unmasker("Paris is the <mask> of France.")
 
 It outputs:
 
-```json
+```python
 [{'score': 0.9286897778511047,
   'token': 133852,
   'token_str': 'capital',
