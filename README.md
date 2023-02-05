@@ -63,6 +63,44 @@ tokenizes each sentence and compares it.
 Unfortunately, some sentences have a slightly different output compared to the `fairseq` tokenizer, but this happens not quite often.
 The output of the `xlm_v_tokenizer_comparison.py` script with all tokenizer differences can be viewed [here](tokenizer_diff.txt).
 
+# MLM checks
+
+After the model conversion and tokenizer checks, it is time to check the MLM performance:
+
+```python
+from transformers import pipeline
+
+unmasker = pipeline('fill-mask', model='stefan-it/xlm-v-base')
+unmasker("Paris is the <mask> of France.")
+```
+
+It outputs:
+
+```json
+[{'score': 0.9286897778511047,
+  'token': 133852,
+  'token_str': 'capital',
+  'sequence': 'Paris is the capital of France.'},
+ {'score': 0.018073994666337967,
+  'token': 46562,
+  'token_str': 'Capital',
+  'sequence': 'Paris is the Capital of France.'},
+ {'score': 0.013238662853837013,
+  'token': 8696,
+  'token_str': 'centre',
+  'sequence': 'Paris is the centre of France.'},
+ {'score': 0.010450296103954315,
+  'token': 550136,
+  'token_str': 'heart',
+  'sequence': 'Paris is the heart of France.'},
+ {'score': 0.005028395913541317,
+  'token': 60041,
+  'token_str': 'center',
+  'sequence': 'Paris is the center of France.'}]
+```
+
+Results for masked LM are pretty good!
+
 # Downstream task performance
 
 The last part of integrating a model into 🤗 Transformers is to test the performance on downstream tasks and compare their
