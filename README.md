@@ -52,6 +52,8 @@ Configuration saved in /media/stefan/89914e9b-0644-4f79-8e65-a8c5245df168/xlmv/e
 Model weights saved in /media/stefan/89914e9b-0644-4f79-8e65-a8c5245df168/xlmv/exported-working/pytorch_model.bin
 ```
 
+**Notice**: On my laptop, 16GB of CPU RAM were not enough to convert the model weights. So I had to convert it on my server...
+
 # Tokenizer checks
 
 Another crucial part of integrating a model into 🤗 Transformers is on the Tokenizer side. The tokenizer in 🤗 Transformers
