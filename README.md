@@ -33,7 +33,7 @@ From the abstract of the XLM-V paper:
 
 At the moment, XLM-V is not officially integrated into `fairseq` library, but the model itself can be loaded with it.
 
-The first author of the XLM-V paper, Davis Liang, [tweetet](https://twitter.com/LiangDavis/status/1618738467315531777)
+The first author of the XLM-V paper, Davis Liang, [tweeted](https://twitter.com/LiangDavis/status/1618738467315531777)
 about the model weights, so they can be downloaded via:
 
 ```bash
