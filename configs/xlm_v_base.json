@@ -1,0 +1,9 @@
+{
+    "seeds": [1],
+    "batch_sizes": [32],
+    "hf_model": "stefan-it/xlm-v-base",
+    "context_size": 0,
+    "learning_rates": [2e-05],
+    "epochs": [10],
+    "cuda": "0"
+}
