@@ -90,7 +90,7 @@ annotated in MasakhaNER v1. For this reason, we convert all `DATE` entities into
 Detailed results for all 5 different models can be seen here:
 
 * [XLM-R (Base) Results (Development and Test result)](masakhaner_zero_shot_xlm_r_results.md)
-* [XLM-R (Base) Results (Development and Test result)](masakhaner_zero_shot_xlm_v_results.md)
+* [XLM-V (Base) Results (Development and Test result)](masakhaner_zero_shot_xlm_v_results.md)
 
 Here's the overall performance table (inspired by Table 11 in the XLM-V paper with their results):
 
@@ -114,7 +114,7 @@ so a A100 (40GB) GPU is definitely useful.
 Detailed results for all 5 different models can be seen here:
 
 * [XLM-R (Base) Results (Development and Test result)](wikiann_zero_shot_xlm_r_results.md)
-* [XLM-R (Base) Results (Development and Test result)](wikiann_zero_shot_xlm_v_results.md)
+* [XLM-V (Base) Results (Development and Test result)](wikiann_zero_shot_xlm_v_results.md)
 
 Here's the overall performance table (inspired by Table 10 in the XLM-V paper with their results):
 
