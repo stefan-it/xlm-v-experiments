@@ -105,7 +105,7 @@ Diff. between XLM-V and XLM-R in the paper: (32.1 - 20.9) = 11.2%.
 
 Diff. between reproduced XLM-V and XLM-R: (39.7 - 22.9) = 16.8%.
 
-## WikiANN (Rahimi et al.)
+## WikiANN ([Rahimi et al.](https://aclanthology.org/P19-1015/))
 
 The script `wikiann-zero-shot.py` performs zero-shot evaluation on the WikiANN (Rahimi et al.) dataset. Ths script `wikiann-zero-shot.py`
 is used for zero-shot evaluation and will also output a nice results table. Notice: it uses a high batch size for evaluating the model,
