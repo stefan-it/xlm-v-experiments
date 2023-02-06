@@ -8,6 +8,7 @@ Please open [an issue](https://github.com/stefan-it/xlm-v-experiments/issues/new
 
 # Changelog
 
+* 06.05.2023: Mention `fairseq` PR for XLM-V and add results on XQuAD.
 * 05.02.2023: Initial version of this repo.
 
 # XLM-V background
@@ -31,7 +32,8 @@ From the abstract of the XLM-V paper:
 
 # Weights conversion
 
-At the moment, XLM-V is not officially integrated into `fairseq` library, but the model itself can be loaded with it.
+At the moment, XLM-V is not officially integrated into `fairseq` library, but the model itself can be loaded with it. But here's an open
+[merge requests](https://github.com/facebookresearch/fairseq/pull/4958) that adds model and usage readme into `fairseq`.
 
 The first author of the XLM-V paper, Davis Liang, [tweeted](https://twitter.com/LiangDavis/status/1618738467315531777)
 about the model weights, so they can be downloaded via:
@@ -106,9 +108,100 @@ Results for masked LM are pretty good!
 # Downstream task performance
 
 The last part of integrating a model into 🤗 Transformers is to test the performance on downstream tasks and compare their
-performance with the paper results.
+performance with the paper results. Both QA and NER downstream tasks are covered here.
 
-For this reason, the `flair-fine-tuner.py` fine-tunes a model on the English WikiANN (Rahimi et al.) split with the hyper-parameters,
+## QA
+
+A recent `master` version of Transformers (commit: `59d5ede`) is used to reproduce the XQuAD results using the PyTorch
+[question answering](https://github.com/huggingface/transformers/tree/main/examples/pytorch/question-answering) example
+on a single A100 (40GB) GPU.
+
+First, 5 models (with different seed!) are fine-tuned on English SQuAD dataset.
+
+Fine-tuning for first model (XLM-R):
+
+```bash
+python3 run_qa.py \
+--model_name_or_path xlm-roberta-base \
+--dataset_name squad \
+--do_train \
+--do_eval \
+--max_seq_length 512 \
+--doc_stride 128 \
+--per_device_train_batch_size 6 \
+--learning_rate 3e-5 \
+--weight_decay 0.0 \
+--warmup_steps 0 \
+--num_train_epochs 2 \
+--seed 1 \
+--output_dir xlm-r-1 \
+--fp16 \
+--save_steps 14646
+```
+
+For XLM-V is looks similar:
+
+```bash
+ python3 run_qa.py \
+ --model_name_or_path stefan-it/xlm-v-base \
+ --dataset_name squad \
+ --do_train \
+ --do_eval \
+ --max_seq_length 512 \
+ --doc_stride 128 \
+ --per_device_train_batch_size 6 \
+ --learning_rate 3e-5 \
+ --weight_decay 0.0 \
+ --warmup_steps 0 \
+ --num_train_epochs 2 \
+ --seed 1 \
+ --output_dir xlm-v-1 \
+ --fp16 \
+ --save_steps 14618
+```
+
+Then this fine-tuned model can be zero-shot evaluated on the 11 languages in XQuAD. Here's an example for Hindi (shortened):
+
+```bash
+python3 run_qa.py --model_name_or_path xlm-r-1 \
+--dataset_name xquad \
+--dataset_config_name xquad.hi \
+--do_eval \
+--max_seq_length 512 \
+--doc_stride 128 \
+--output_dir xlm-r-1-hi \
+--fp16
+```
+
+This is done for each fine-tuned model on each language. Detailed results for all 5 different models can be seen here:
+
+* [XLM-R (Base) Results (Development and Test result)](xquad_zero_shot_xlm_r_results.md)
+* [XLM-V (Base) Results (Development and Test result)](xquad_zero_shot_xlm_v_results.md)
+
+Here's the overall performance table (inspired by Table 9 in the XLM-V paper with their results):
+
+| Model              |     en      |      es     |      de     |      el     |     ru      |     tr
+| ------------------ | ----------- | ----------- | ----------- | ----------- | ----------- | -----------
+| XLM-R (Paper)      | 72.1 / 83.5 | 58.5 / 76.5 | 57.6 / 73.0 | 55.4 / 72.2 | 56.6 / 73.1 | 52.2 / 68.3
+| XLM-R (Reproduced) | 73.1 / 83.8 | 59.5 / 76.8 | 60.0 / 75.3 | 55.8 / 73.0 | 58.0 / 74.4 | 51.1 / 67.3
+| XLM-V (Paper)      | 72.9 / 84.2 | 60.3 / 78.1 | 57.3 / 75.1 | 53.5 / 72.4 | 56.0 / 73.2 | 51.8 / 67.5
+| XLM-V (Reproduced) | 72.5 / 83.1 | 58.7 / 76.3 | 59.5 / 75.2 | 54.2 / 72.0 | 56.2 / 72.9 | 50.4 / 66.5
+
+
+| Model              |     ar      |      vi     |      th     |      zh     |      hi     |    Avg.
+| ------------------ | ----------- | ----------- | ----------- | ----------- | ----------- | -----------
+| XLM-R (Paper)      | 49.2 / 65.9 | 53.5 / 72.9 | 55.7 / 66.3 | 55.5 / 65.3 | 49.8 / 57.7 | 56.0 / 71.3
+| XLM-R (Reproduced) | 49.8 / 66.3 | 55.0 / 74.0 | 56.3 / 66.5 | 55.5 / 64.2 | 51.9 / 68.0 | 56.9 / 71.8
+| XLM-V (Paper)      | 51.2 / 67.5 | 53.7 / 73.1 | 56.9 / 67.0 | 53.5 / 63.1 | 51.9 / 69.4 | 56.3 / 71.9
+| XLM-V (Reproduced) | 50.5 / 67.0 | 54.1 / 72.7 | 55.3 / 65.1 | 56.7 / 65.3 | 52.4 / 68.5 | 56.4 / 71.3
+
+Summary: The F1-Score results for XLM-V could be reproduced (56.3 vs. 56.4). For exact match there are slightly different
+results (71.9 vs. 71.3). For the XLM-R model there's a larger difference: our XLM-R models perform better on XQuAD compared
+to their XLM-R reimplementation. Our XLM-R model also achieves better results than XLM-V on XQuAD.
+
+## NER
+
+For NER, the `flair-fine-tuner.py` fine-tunes a model on the English WikiANN (Rahimi et al.) split with the hyper-parameters,
 mentioned in the paper (only difference is that we use 512 as sequence length compared to 128!). We fine-tune 5 models with
 different seeds and average performance over these 5 different models. The scripts expects a model configuration as first input argument.
 All configuration files are located under the `./configs` folder. Fine-tuning XLM-V can be started with:
@@ -120,7 +213,7 @@ $ python3 flair-fine-tuner.py ./configs/xlm_v_base.json
 Fine-tuning is done on a A100 (40GB) instances from [Lambda Cloud](https://lambdalabs.com/service/gpu-cloud) using Flair.
 A 40GB is definitely necessary to fine-tune this model with that given batch size! Latest Flair master (commit `23618cd`) is also needed.
 
-## MasakhaNER v1
+### MasakhaNER v1
 
 The script `masakhaner-zero-shot.py` performs zero-shot evaluation on the MasakhaNER v1 datset, that is used in the XLM-V paper.
 One crucial part is to deal with `DATE` entities: they do not exist in the English WikiANN (Rahimi et al.) split, but they are
@@ -145,7 +238,7 @@ Diff. between XLM-V and XLM-R in the paper: (32.1 - 20.9) = 11.2%.
 
 Diff. between reproduced XLM-V and XLM-R: (39.7 - 22.9) = 16.8%.
 
-## WikiANN ([Rahimi et al.](https://aclanthology.org/P19-1015/))
+### WikiANN ([Rahimi et al.](https://aclanthology.org/P19-1015/))
 
 The script `wikiann-zero-shot.py` performs zero-shot evaluation on the WikiANN (Rahimi et al.) dataset. Ths script `wikiann-zero-shot.py`
 is used for zero-shot evaluation and will also output a nice results table. Notice: it uses a high batch size for evaluating the model,
