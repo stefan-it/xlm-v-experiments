@@ -284,4 +284,4 @@ After all checks (weights, tokenizer and downstream tasks) the model was uploade
 
 * [`facebook/xlm-v-base`](https://huggingface.co/facebook/xlm-v-base)
 
-The XLM-V was also added to the 🤗 Transformers Documentation with [this](https://github.com/huggingface/transformers/pull/21498) PR.
+XLM-V was also added to the 🤗 Transformers Documentation with [this](https://github.com/huggingface/transformers/pull/21498) PR.
