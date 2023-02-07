@@ -8,6 +8,8 @@ Please open [an issue](https://github.com/stefan-it/xlm-v-experiments/issues/new
 
 # Changelog
 
+* 08.05.2023: XLM-V model is available under [Meta AI organization](https://huggingface.co/facebook/xlm-v-base) and it was also added to
+              🤗 Transformers [Documentation](https://github.com/huggingface/transformers/pull/21498).
 * 06.05.2023: Mention `fairseq` PR for XLM-V and add results on XQuAD.
 * 05.02.2023: Initial version of this repo.
 
@@ -278,8 +280,8 @@ Diff. between reproduced XLM-V and XLM-R: (65.0 - 62.6) = 2.4%.
 
 # 🤗 Transformers Model Hub
 
-After all checks (weights, tokenizer and downstream tasks) the model can be uploaded to the 🤗 Transformers Model Hub:
+After all checks (weights, tokenizer and downstream tasks) the model was uploaded to the 🤗 Transformers Model Hub:
 
-* [`stefan-it/xlm-v-base`](https://huggingface.co/stefan-it/xlm-v-base)
+* [`facebook/xlm-v-base`](https://huggingface.co/facebook/xlm-v-base)
 
-Model will be moved to [`Meta AI`](https://huggingface.co/facebook) organization soon.
+The XLM-V was also added to the 🤗 Transformers Documentation with [this](https://github.com/huggingface/transformers/pull/21498) PR.
